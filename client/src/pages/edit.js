@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, React } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 
 const Edit = () => {
     const [data, setData] = useState(null)
     const [player, setPlayer] = useState(null)
-    const [feedback, setFeedback] = useState(null)
+    const [feedback, setFeedback] = useState({ message: '', style: '' })
 
     const navigate = useNavigate()
 
@@ -16,13 +16,14 @@ const Edit = () => {
     }, [id])
 
     const fetchData = (id) => {
-        fetch(`/player/edit/${id}`)
+        fetch(`/player/${id}`)
             .then((res) => res.json())
             .then((data) => setData(data))
     }
 
     const editPlayer = (e) => {
         e.preventDefault()
+
         fetch(`/player/edit/${id}`, {
             method: 'PUT',
             body: JSON.stringify(player),
@@ -30,36 +31,48 @@ const Edit = () => {
                 'Content-Type': 'application/json',
             },
         })
-        setTimeout(() => { navigate('/') }, 1000)
+        setTimeout(() => {
+            setFeedback({ message: "Player new info saved!", style: 'text-green-600 font-bold' })
+            setTimeout(() => {
+                navigate(`/player/${id}`)
+            }, 1000)
+        }, 1000)
+
     }
 
     const deleteUser = (id) => {
-        fetch(`/player/${id}`, {
+        fetch(`/player/edit/${id}`, {
             method: "DELETE",
         })
-        .then((res)=>res.json())
-        setTimeout(() => { navigate('/') }, 1000)
+            .then((res) => res.json())
+        setTimeout(() => {
+            setFeedback({ message: "Player deleted!", style: 'text-green-600 font-bold' })
+            setTimeout(() => {
+                navigate('/')
+            }, 1000)
+        }, 1000)
     }
 
     return (
         <>
-            <div className="max-w-xl mx-auto">
-                <div className="text-center">
-                    <h1 className="text-3xl font-bold text-gray-800 sm:text-3xl">
-                        Edit player
-                    </h1>
+            {/* First Grid */}
+            <div className="container grid grid-cols-3 grid-row-3 gap-4">
+                <div className="row-span-3">
+                    <div className="h-full bg-blue-300">
+                        <img></img>
+                    </div>
                 </div>
-                <div className="mt-12">
+                <div className="row-span-2 col-span-2">
                     <form method='PUT' onSubmit={editPlayer}>
-                        <div className="grid gap-4 lg:gap-6">
-
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
-                                <div>
-                                    <label htmlFor="player-firstname" className="block mb-2 text-sm text-gray-700 font-medium">First Name</label>
+                        {/* Second grid */}
+                        <div className="grid grid-col-4 grid-row-3 gap-4 divide-black divide-y-2 divide-opacity-5">
+                            <div className="row-span-2 w-full col-span-4">
+                                <div className="">
+                                    <label htmlFor="player-firstname" className="">First name: </label>
                                     <input type="text"
                                         name="player-firstname"
                                         id="player-firstname"
-                                        className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                                        className="edit-input"
                                         onChange={e => {
                                             setPlayer({
                                                 ...player,
@@ -67,13 +80,12 @@ const Edit = () => {
                                             })
                                         }} placeholder={!data ? '' : data.fname} />
                                 </div>
-
                                 <div>
-                                    <label htmlFor="player-lastname" className="block mb-2 text-sm text-gray-700 font-medium">Last Name</label>
+                                    <label htmlFor="player-lastname" className="">Last name: </label>
                                     <input type="text"
                                         name="player-lastname"
                                         id="player-lastname"
-                                        className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                                        className=" edit-input "
                                         onChange={e => {
                                             setPlayer({
                                                 ...player,
@@ -83,15 +95,12 @@ const Edit = () => {
                                         placeholder={!data ? '' : data.lname}
                                     />
                                 </div>
-                            </div>
-
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
                                 <div>
-                                    <label htmlFor="player-nationality" className="block mb-2 text-sm text-gray-700 font-medium">Nationality</label>
+                                    <label htmlFor="player-country" className="">Nationality: </label>
                                     <input type="text"
-                                        name="player-nationality"
-                                        id="player-nationality"
-                                        className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                                        name="player-country"
+                                        id="player-country"
+                                        className="edit-input"
                                         onChange={e => {
                                             setPlayer({
                                                 ...player,
@@ -101,9 +110,10 @@ const Edit = () => {
                                         placeholder={!data ? '' : data.country} />
                                 </div>
                                 <div>
-                                    <label htmlFor="player-age" className="block mb-2 text-sm text-gray-700 font-medium">Age</label>
+                                    <label htmlFor="player-age" className="">Age: </label>
                                     <input type="number"
-                                        name="player-age" id="player-age" className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                                        name="player-age" id="player-age"
+                                        className="edit-input"
                                         onChange={e => {
                                             setPlayer({
                                                 ...player,
@@ -112,23 +122,23 @@ const Edit = () => {
                                         }}
                                         placeholder={!data ? '' : data.age} />
                                 </div>
-                            </div>
-
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
                                 <div>
-                                    <label htmlFor="player-club" className="block mb-2 text-sm text-gray-700 font-medium">Club</label>
-                                    <input type="text" name="player-club" id="player-club" className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none" onChange={e => {
-                                        setPlayer({
-                                            ...player,
-                                            club: e.target.value
-                                        })
-                                    }}
+                                    <label htmlFor="player-club" className="">Club: </label>
+                                    <input type="text" name="player-club"
+                                        id="player-club"
+                                        className="edit-input"
+                                        onChange={e => {
+                                            setPlayer({
+                                                ...player,
+                                                club: e.target.value
+                                            })
+                                        }}
                                         placeholder={!data ? '' : data.club}
                                     />
                                 </div>
                                 <div>
-                                    <label htmlFor="player-position" className="block mb-2 text-sm text-gray-700 font-medium">Position</label>
-                                    <input type="text" name="player-position" id="player-position" className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none" onChange={e => {
+                                    <label htmlFor="player-position" className="">Position: </label>
+                                    <input type="text" name="player-position" id="player-position" className="edit-input uppercase" onChange={e => {
                                         setPlayer({
                                             ...player,
                                             position: e.target.value
@@ -137,12 +147,9 @@ const Edit = () => {
                                         placeholder={!data ? '' : data.position}
                                     />
                                 </div>
-                            </div>
-
-                            <div className="grid grid-cols-1 sm:grid-cols-3  gap-4 lg:gap-6">
                                 <div>
-                                    <label htmlFor="player-matches" className="block mb-2 text-sm text-gray-700 font-medium">Matches</label>
-                                    <input type="number" name="player-matches" id="player-matches" className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                                    <label htmlFor="player-matches" className="">Matches: </label>
+                                    <input type="number" name="player-matches" id="player-matches" className="edit-input"
                                         onChange={e => {
                                             setPlayer({
                                                 ...player,
@@ -152,8 +159,8 @@ const Edit = () => {
                                         placeholder={!data ? '' : data.matches} />
                                 </div>
                                 <div>
-                                    <label htmlFor="player-goals" className="block mb-2 text-sm text-gray-700 font-medium">Goals</label>
-                                    <input type="number" name="player-goals" id="player-goals" className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                                    <label htmlFor="player-scored" className="">Scored: </label>
+                                    <input type="number" name="player-scored" id="player-scored" className="edit-input"
                                         onChange={e => {
                                             setPlayer({
                                                 ...player,
@@ -162,8 +169,8 @@ const Edit = () => {
                                         }} placeholder={!data ? '' : data.scored} />
                                 </div>
                                 <div>
-                                    <label htmlFor="player-assists" className="block mb-2 text-sm text-gray-700 font-medium">Assists</label>
-                                    <input type="number" name="player-assists" id="player-assists" className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none" onChange={e => {
+                                    <label htmlFor="player-assists" className="">Assists: </label>
+                                    <input type="number" name="player-assists" id="player-assists" className="edit-input" onChange={e => {
                                         setPlayer({
                                             ...player,
                                             assists: e.target.value
@@ -172,38 +179,32 @@ const Edit = () => {
                                         placeholder={!data ? '' : data.assists} />
                                 </div>
                             </div>
-
-                        </div>
-                        <hr />
-                        <div className="mt-6 grid grid-cols-3">
-                            <div>
-                                <button type="submit" className="py-3 px-4  text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">Submit</button>
-                            </div>
-                            <div>
-                                <button type="button"
-                                    className="py-3 px-4 justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
-                                    onClick={() => navigate(`/player/${id}`)}
-                                >Cancel</button>
-                            </div>
-                            <div>
-                                <button type="button" className=" py-3 px-4 justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700 disabled:opacity-50 disabled:pointer-events-none"
-                                    onClick={() => {
-                                        deleteUser(id)
-                                    }}>Delete</button>
+                            <div className="row-span-1 col-span-4 row-start-3 ">
+                                <div className="flex justify-evenly my-5">
+                                    <div className="">
+                                        <button type="submit" className="first:bg-green-600 btn">Save</button>
+                                    </div>
+                                    <div>
+                                        <button type="button"
+                                            className="btn"
+                                            onClick={() => navigate(`/player/${id}`)}
+                                        >Cancel</button>
+                                    </div>
+                                    <div>
+                                        <button type="button" className="first:bg-red-300 btn"
+                                            onClick={() => {
+                                                deleteUser(id)
+                                            }}>Delete</button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p className={`text-center text-opacity-50 text-sm ${feedback.style}`}>{!feedback ? '' : feedback.message}</p>
+                                </div>
                             </div>
                         </div>
                     </form>
-
-                    <div className="mt-3 text-center">
-                        <p className="text-sm text-gray-500" id='feedback-text'>
-                            {!feedback ? '' : feedback}
-                        </p>
-                    </div>
-
-
                 </div>
             </div>
-
         </>
     )
 }

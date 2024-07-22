@@ -1,137 +1,144 @@
-import { useState } from 'react';
+import { useState, React } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const NewPlayer = () => {
     const [player, setPlayer] = useState(null)
-    const [feedback, setFeedback] = useState(null)
+    const [feedback, setFeedback] = useState({ message: '', style: '' })
 
     const navigate = useNavigate();
+
 
     const addPlayer = (e) => {
         e.preventDefault()
 
-        fetch('/newplayer', {
+
+        fetch('/player', {
             method: 'POST',
             body: JSON.stringify(player),
             headers: {
                 'Content-Type': 'application/json',
             },
         })
-            .catch(error => {
-            });
-            
+            .then((res) => res.json())
+
         setTimeout(() => {
-            navigate('/')
-        }, 500)
+            setFeedback({ message: "New player created!", style: 'text-green-600 font-bold' })
+            setTimeout(() => { navigate(`/}`) }, 1000)
+        }, 1000)
     }
 
     return (
         <>
-            <div className="max-w-xl mx-auto">
-                <div className="text-center">
-                    <h1 className="text-3xl font-bold text-gray-800 sm:text-3xl">
-                        New player
-                    </h1>
+            {/* First Grid */}
+            <div className="container grid grid-cols-3 grid-row-3 gap-4">
+                <div className="row-span-3">
+                    <div className="h-full bg-blue-300">
+                        <img></img>
+                    </div>
                 </div>
-
-                <div className="mt-12">
-
-                    <form method='POST' onSubmit={addPlayer}>
-                        <div className="grid gap-4 lg:gap-6">
-
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
-                                <div>
-                                    <label htmlFor="player-firstname" className="block mb-2 text-sm text-gray-700 font-medium">First Name</label>
+                <div className="row-span-2 col-span-2"><div className="font-bold text-center text-3xl">
+                        <h1>
+                           New player
+                        </h1>
+                    </div>
+                    <form method='PUT' onSubmit={addPlayer}>
+                        {/* Second grid */}
+                        <div className="grid grid-col-4 grid-row-3 gap-4 divide-black divide-y-2 divide-opacity-5">
+                            <div className="row-span-2 w-full col-span-4">
+                                <div className="">
+                                    <label htmlFor="player-firstname" className="">First name: </label>
                                     <input type="text"
                                         name="player-firstname"
                                         id="player-firstname"
-                                        className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                                        className="edit-input"
                                         onChange={e => {
                                             setPlayer({
                                                 ...player,
                                                 fname: e.target.value
                                             })
-                                        }} required />
+                                        }} />
                                 </div>
-
                                 <div>
-                                    <label for="player-lastname" className="block mb-2 text-sm text-gray-700 font-medium">Last Name</label>
+                                    <label htmlFor="player-lastname" className="">Last name: </label>
                                     <input type="text"
                                         name="player-lastname"
                                         id="player-lastname"
-                                        className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                                        className=" edit-input "
                                         onChange={e => {
                                             setPlayer({
                                                 ...player,
                                                 lname: e.target.value
                                             })
                                         }}
+
                                     />
                                 </div>
-                            </div>
-
-                            {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
                                 <div>
-                                    <label for="player-nationality" className="block mb-2 text-sm text-gray-700 font-medium">Nationality</label>
+                                    <label htmlFor="player-country" className="">Nationality: </label>
                                     <input type="text"
-                                        name="player-nationality"
-                                        id="player-nationality"
-                                        className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                                        name="player-country"
+                                        id="player-country"
+                                        className="edit-input"
                                         onChange={e => {
                                             setPlayer({
                                                 ...player,
                                                 country: e.target.value
                                             })
-                                        }} required />
+                                        }}
+                                    />
                                 </div>
                                 <div>
-                                    <label for="player-age" className="block mb-2 text-sm text-gray-700 font-medium">Age</label>
+                                    <label htmlFor="player-age" className="">Age: </label>
                                     <input type="number"
-                                        name="player-age" id="player-age" className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                                        name="player-age" id="player-age"
+                                        className="edit-input"
                                         onChange={e => {
                                             setPlayer({
                                                 ...player,
                                                 age: e.target.value
                                             })
-                                        }} />
+                                        }}
+                                    />
                                 </div>
-                            </div>
+                                <div>
+                                    <label htmlFor="player-club" className="">Club: </label>
+                                    <input type="text" name="player-club"
+                                        id="player-club"
+                                        className="edit-input"
+                                        onChange={e => {
+                                            setPlayer({
+                                                ...player,
+                                                club: e.target.value
+                                            })
+                                        }}
 
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
-                                <div>
-                                    <label for="player-club" className="block mb-2 text-sm text-gray-700 font-medium">Club</label>
-                                    <input type="text" name="player-club" id="player-club" className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none" onChange={e => {
-                                        setPlayer({
-                                            ...player,
-                                            club: e.target.value
-                                        })
-                                    }} required />
+                                    />
                                 </div>
                                 <div>
-                                    <label for="player-position" className="block mb-2 text-sm text-gray-700 font-medium">Position</label>
-                                    <input type="text" name="player-position" id="player-position" className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none" onChange={e => {
+                                    <label htmlFor="player-position" className="">Position: </label>
+                                    <input type="text" name="player-position" id="player-position" className="edit-input uppercase" onChange={e => {
                                         setPlayer({
                                             ...player,
                                             position: e.target.value
                                         })
-                                    }} required />
-                                </div>
-                            </div>
+                                    }}
 
-                            <div className="grid grid-cols-1 sm:grid-cols-3  gap-4 lg:gap-6">
+                                    />
+                                </div>
                                 <div>
-                                    <label for="player-matches" className="block mb-2 text-sm text-gray-700 font-medium">Matches</label>
-                                    <input type="number" name="player-matches" id="player-matches" className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                                    <label htmlFor="player-matches" className="">Matches: </label>
+                                    <input type="number" name="player-matches" id="player-matches" className="edit-input"
                                         onChange={e => {
                                             setPlayer({
                                                 ...player,
                                                 matches: e.target.value
                                             })
-                                        }} required />
+                                        }}
+                                    />
                                 </div>
                                 <div>
-                                    <label for="player-goals" className="block mb-2 text-sm text-gray-700 font-medium">Goals</label>
-                                    <input type="number" name="player-goals" id="player-goals" className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                                    <label htmlFor="player-scored" className="">Scored: </label>
+                                    <input type="number" name="player-scored" id="player-scored" className="edit-input"
                                         onChange={e => {
                                             setPlayer({
                                                 ...player,
@@ -140,31 +147,37 @@ const NewPlayer = () => {
                                         }} />
                                 </div>
                                 <div>
-                                    <label for="player-assists" className="block mb-2 text-sm text-gray-700 font-medium">Assists</label>
-                                    <input type="number" name="player-assists" id="player-assists" className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none" onChange={e => {
+                                    <label htmlFor="player-assists" className="">Assists: </label>
+                                    <input type="number" name="player-assists" id="player-assists" className="edit-input" onChange={e => {
                                         setPlayer({
                                             ...player,
                                             assists: e.target.value
                                         })
-                                    }} />
-                                </div> */}
-                        </div>
+                                    }}
+                                    />
+                                </div>
+                            </div>
+                            <div className="row-span-1 col-span-4 row-start-3 ">
+                                <div className="flex justify-evenly my-5">
+                                    <div className="">
+                                        <button type="submit" className="first:bg-green-600 btn">Save</button>
+                                    </div>
+                                    <div>
+                                        <button type="button"
+                                            className="btn"
+                                            onClick={() => navigate(`/player/`)}
+                                        >Cancel</button>
+                                    </div>
 
-                        {/* </div> */}
-                        <div className="mt-6 grid">
-                            <button type="submit" className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">Create player</button>
+                                </div>
+                                <div>
+                                    <p className={`text-center text-opacity-50 text-sm ${feedback.style}`}>{!feedback ? '' : feedback.message}</p>
+                                </div>
+                            </div>
                         </div>
                     </form>
-                    <div className="mt-3 text-center">
-                        <p className="text-sm text-gray-500" id='feedback-text'>
-                            {!feedback ? '' : feedback}
-                        </p>
-                    </div>
-
-
                 </div>
             </div>
-
         </>
     )
 }

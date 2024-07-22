@@ -1,16 +1,26 @@
-import { useState } from 'react';
+/* eslint-disable react/prop-types */
+import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
+import React from 'react';
 
 // import Overlay from '../components/Overlay/delete_overlay'
 // const toggleOverlay = () => {
 //     setIsOpen(!isOpen);
 // };
 
-const Home = ({ data, setData }) => {
+const Home = () => {
+    const navigate = useNavigate()
     // const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('')
+    const [data, setData] = useState(null)
 
-    const navigate = useNavigate()
+    useEffect(() => {
+            fetch(`/players`)
+                .then((res) => res.json())
+                .then((data) => setData(data))
+                .catch(error => console.log('Error:', error));
+    }, [])
+
 
     const filteredData = searchTerm.trim() !== ''
         ? data.filter((player) => (player.fname + ' ' + player.lname).toLowerCase().includes(searchTerm.toLowerCase()))
@@ -18,57 +28,42 @@ const Home = ({ data, setData }) => {
 
     return (
         <>
-            <form>
-                <div className="flex flex-col p1.5 min-w-full align-middle">
-                    <div className='px-6 py-3 text-s' >
-                        <label className='px-6 py-3 text-end font-medium uppercase' htmlFor="player-name">Name:</label>
-                        <input name='player-name' id='player-name' type="text" className='px-6 py-3 text-start font-medium' onChange={(e) => setSearchTerm(e.target.value)} />
-                        <button type="submit" className="px-6 py-3 text-start font-medium text-white bg-blue-600 uppercase">Search</button>
-                    </div>
+            <div className="container">
+                <div className='place-items-center py-6 px-3 bg-gray-100'>
+                    <form>
+                        <label className='font-bold' htmlFor="player-name">Search: </label>
+                        <input className='rounded border-black border-spacing-1 mx-1 w-1/4' name='player-name' id='player-name' type="text" onChange={(e) => setSearchTerm(e.target.value)} />
+                    </form>
                 </div>
-            </form>
-
-            <hr className="border-gray-500" />
-
-            <div className="flex flex-col">
-                <div className="-m-1.5 overflow-x-auto">
-                    <div className="p-1.5 min-w-full inline-block align-middle">
-                        <div className="overflow-hidden">
-                            <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
-                                <thead>
-                                    <tr>
-                                        <th scope="col" className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Name</th>
-                                        <th scope="col" className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Age</th>
-                                        <th scope="col" className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Country</th>
-                                        <th scope="col" className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Position</th>
-                                        <th scope="col" className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Scored</th>
-                                        <th scope="col" className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Matches</th>
-                                        <th scope="col" className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Club</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-200">
-                                    {filteredData ? filteredData.map((player, index) =>
-                                        <tr className="hover:bg-gray-100 cursor-pointer" key={index}>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800" onClick={() => navigate(`/player/${player.id}`)}>{player.fname} {player.lname} </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800" onClick={() => navigate(`/player/${player.id}`)}>{player.age}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800" onClick={() => navigate(`/player/${player.id}`)}>{player.country}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800" onClick={() => navigate(`/player/${player.id}`)}>{player.position}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800" onClick={() => navigate(`/player/${player.id}`)}>{player.scored}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800" onClick={() => navigate(`/player/${player.id}`)}>{player.matches}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800" onClick={() => navigate(`/player/${player.id}`)}>{player.club}</td>
-                                            <td className="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-800"></td>
-                                            <button className='px-6 py-4 whitespace-nowrap text-sm text-gray-800' type='button' onClick={() => navigate(`/player/edit/${player.id}`)}>Edit</button>
-                                        </tr>
-                                    ) : <p>Loading ...</p>}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                <table className=" my-4 mx-auto py-6 px-3 w-full items-center divide-black divide-y-2 divide-opacity-5 table-fixed">
+                    <thead className=" uppercase bg-gray-100">
+                        <tr className=''>
+                            <th scope="col" className='border-gray border-2-l px-6 py-3'>Name</th>
+                            <th scope="col" className=''>Age</th>
+                            <th scope="col" className=''>Country</th>
+                            <th scope="col" className=''>Position</th>
+                            <th scope="col" className=''>Club</th>
+                            <th scope="col" className=''></th>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        {filteredData ? filteredData.map((player, index) =>
+                            <tr key={index} className="text-s text-center ltr:text-left border-gray border-b-2 my-15 h-10 hover:cursor-pointer hover:bg-blue-100">
+                                <td className='indent-8 text-left' onClick={() => navigate(`/player/${player._id}`)}>{player.fname} {player.lname} </td>
+                                <td className='' onClick={() => navigate(`/player/${player._id}`)}>{player.age}</td>
+                                <td className='' onClick={() => navigate(`/player/${player._id}`)}>{player.country}</td>
+                                <td className='uppercase' onClick={() => navigate(`/player/${player._id}`)}>{player.position}</td>
+                                <td className='capitalize' onClick={() => navigate(`/player/${player._id}`)}>{player.club}</td>
+                                <td><button className='bg-blue-400 font-bold text-white w-16 rounded align-middle' type='button' onClick={() => navigate(`/player/edit/${player._id}`)}>Edit</button></td>
+                            </tr>
+                        ) : <p className='text-center'>Loading...</p>}
+                    </tbody>
+                </table>
             </div>
-
         </>
     )
-}
+};
+
+
 
 export default Home;

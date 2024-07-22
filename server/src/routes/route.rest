@@ -1,0 +1,32 @@
+GET http://localhost:3001/players
+
+###
+
+GET http://localhost:3001/player/668def1139fa4477f26e9447
+
+###
+
+POST http://localhost:3001/player
+Content-Type: application/json
+
+{
+    "fname": "a1dasda",
+    "lname": "vinicius",
+    "age":"3"
+}
+
+###
+
+PATCH http://localhost:3001/player/edit/668def1139fa4477f26e9447
+Content-Type: application/json
+
+{
+    "fname": "Pedro",
+    "age": 13,
+    "position": "CAM"
+}
+
+### 
+
+DELETE http://localhost:3001/player/668e38f12ad27b0331cba503
+

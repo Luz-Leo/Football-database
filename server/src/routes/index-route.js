@@ -1,16 +1,9 @@
-'use strict'
-
 import express from 'express';
+import Player from '../models/player.js'
+import getPlayer from '../middleware/getPlayer.js';
+import controller from '../controllers/index-controller.js'
 const router = express.Router()
 
-router.get('/data', (req, res, next) => {
-    try {
-        res.status(200).send(players);
-    } catch (e) {
-        console.error(e)
-        res.status(500).send({
-            message: 'Falha ao processar sua requisição'
-        });
-        
-    }
-});
+router.get('/players', controller.getPlayers)
+
+export default router;
