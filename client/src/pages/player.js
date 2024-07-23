@@ -62,7 +62,7 @@ const Player = () => {
                     </div>
                     <div className="">
                         <p id="player-assists" className="">
-                            Assists: {!data ? '' : data.assists}
+                            Assists: {!data ? '' : data.assist}
                         </p>
                     </div>
                 </div>

@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 
 
 const Edit = () => {
-    const [data, setData] = useState(null)
+    // const [player, setplayer] = useState(null)
     const [player, setPlayer] = useState(null)
     const [feedback, setFeedback] = useState({ message: '', style: '' })
 
@@ -12,13 +12,15 @@ const Edit = () => {
     let { id } = useParams();
 
     useEffect(() => {
-        fetchData(id)
+        fetchplayer(id)
     }, [id])
 
-    const fetchData = (id) => {
+    const fetchplayer = (id) => {
         fetch(`/player/${id}`)
             .then((res) => res.json())
-            .then((data) => setData(data))
+            .then((player) => {
+                setPlayer(player)
+            })
     }
 
     const editPlayer = (e) => {
@@ -59,7 +61,7 @@ const Edit = () => {
             <div className="container grid grid-cols-3 grid-row-3 gap-4">
                 <div className="row-span-3">
                     <div className="h-full bg-blue-300">
-                        <img></img>
+                        <img alt='player profile'></img>
                     </div>
                 </div>
                 <div className="row-span-2 col-span-2">
@@ -72,27 +74,27 @@ const Edit = () => {
                                     <input type="text"
                                         name="player-firstname"
                                         id="player-firstname"
-                                        className="edit-input"
+                                        className="edit-input border-hidden border-white"
                                         onChange={e => {
                                             setPlayer({
                                                 ...player,
                                                 fname: e.target.value
                                             })
-                                        }} placeholder={!data ? '' : data.fname} />
+                                        }} placeholder={!player ? '' : player.fname} />
                                 </div>
                                 <div>
                                     <label htmlFor="player-lastname" className="">Last name: </label>
                                     <input type="text"
                                         name="player-lastname"
                                         id="player-lastname"
-                                        className=" edit-input "
+                                        className="edit-input"
                                         onChange={e => {
                                             setPlayer({
                                                 ...player,
                                                 lname: e.target.value
                                             })
                                         }}
-                                        placeholder={!data ? '' : data.lname}
+                                        placeholder={!player ? '' : player.lname}
                                     />
                                 </div>
                                 <div>
@@ -107,7 +109,7 @@ const Edit = () => {
                                                 country: e.target.value
                                             })
                                         }}
-                                        placeholder={!data ? '' : data.country} />
+                                        placeholder={!player ? '' : player.country} />
                                 </div>
                                 <div>
                                     <label htmlFor="player-age" className="">Age: </label>
@@ -120,7 +122,7 @@ const Edit = () => {
                                                 age: e.target.value
                                             })
                                         }}
-                                        placeholder={!data ? '' : data.age} />
+                                        placeholder={!player ? '' : player.age} />
                                 </div>
                                 <div>
                                     <label htmlFor="player-club" className="">Club: </label>
@@ -133,7 +135,7 @@ const Edit = () => {
                                                 club: e.target.value
                                             })
                                         }}
-                                        placeholder={!data ? '' : data.club}
+                                        placeholder={!player ? '' : player.club}
                                     />
                                 </div>
                                 <div>
@@ -144,7 +146,7 @@ const Edit = () => {
                                             position: e.target.value
                                         })
                                     }}
-                                        placeholder={!data ? '' : data.position}
+                                        placeholder={!player ? '' : player.position}
                                     />
                                 </div>
                                 <div>
@@ -156,7 +158,7 @@ const Edit = () => {
                                                 matches: e.target.value
                                             })
                                         }}
-                                        placeholder={!data ? '' : data.matches} />
+                                        placeholder={!player ? '' : player.matches} />
                                 </div>
                                 <div>
                                     <label htmlFor="player-scored" className="">Scored: </label>
@@ -166,17 +168,17 @@ const Edit = () => {
                                                 ...player,
                                                 scored: e.target.value
                                             })
-                                        }} placeholder={!data ? '' : data.scored} />
+                                        }} placeholder={!player ? '' : player.scored} />
                                 </div>
                                 <div>
                                     <label htmlFor="player-assists" className="">Assists: </label>
                                     <input type="number" name="player-assists" id="player-assists" className="edit-input" onChange={e => {
                                         setPlayer({
                                             ...player,
-                                            assists: e.target.value
+                                            assist: e.target.value
                                         })
                                     }}
-                                        placeholder={!data ? '' : data.assists} />
+                                        placeholder={!player ? '' : player.assist} />
                                 </div>
                             </div>
                             <div className="row-span-1 col-span-4 row-start-3 ">

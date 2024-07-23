@@ -8,7 +8,7 @@
 }
 
 .edit-input{
-    @apply font-bold placeholder:text-black;
+    @apply font-bold placeholder:text-black focus:outline-none;
 }
 
 .btn{

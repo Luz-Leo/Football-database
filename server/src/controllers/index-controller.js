@@ -1,13 +1,12 @@
-import Player from '../models/player.js'
+import pool from '../server.js'
 
-export async function getPlayers(req, res, next){
-    try {
-        const players = await Player.find()
-        res.status(200).send(players);
-
-    } catch (err) {
-        res.status(400).json({ message: err.message })
-    }
-}
+export const getPlayers = async (req, res) => {
+    pool.query('SELECT * FROM players ORDER BY id ASC', (error, results) => {
+      if (error) {
+        throw error
+      }
+      res.status(200).json(results.rows)
+    })
+  }
 
 export default {getPlayers}

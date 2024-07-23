@@ -151,7 +151,7 @@ const NewPlayer = () => {
                                     <input type="number" name="player-assists" id="player-assists" className="edit-input" onChange={e => {
                                         setPlayer({
                                             ...player,
-                                            assists: e.target.value
+                                            assist: e.target.value
                                         })
                                     }}
                                     />
@@ -165,7 +165,7 @@ const NewPlayer = () => {
                                     <div>
                                         <button type="button"
                                             className="btn"
-                                            onClick={() => navigate(`/player/`)}
+                                            onClick={() => navigate(`/player`)}
                                         >Cancel</button>
                                     </div>
 

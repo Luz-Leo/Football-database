@@ -50,11 +50,11 @@ const Home = () => {
                         {filteredData ? filteredData.map((player, index) =>
                             <tr key={index} className="text-s text-center ltr:text-left border-gray border-b-2 my-15 h-10 hover:cursor-pointer hover:bg-blue-100">
                                 <td className='indent-8 text-left' onClick={() => navigate(`/player/${player._id}`)}>{player.fname} {player.lname} </td>
-                                <td className='' onClick={() => navigate(`/player/${player._id}`)}>{player.age}</td>
-                                <td className='' onClick={() => navigate(`/player/${player._id}`)}>{player.country}</td>
-                                <td className='uppercase' onClick={() => navigate(`/player/${player._id}`)}>{player.position}</td>
-                                <td className='capitalize' onClick={() => navigate(`/player/${player._id}`)}>{player.club}</td>
-                                <td><button className='bg-blue-400 font-bold text-white w-16 rounded align-middle' type='button' onClick={() => navigate(`/player/edit/${player._id}`)}>Edit</button></td>
+                                <td className='' onClick={() => navigate(`/player/${player.player_id}`)}>{player.age}</td>
+                                <td className='' onClick={() => navigate(`/player/${player.player_id}`)}>{player.country}</td>
+                                <td className='uppercase' onClick={() => navigate(`/player/${player.player_id}`)}>{player.position}</td>
+                                <td className='capitalize' onClick={() => navigate(`/player/${player.player_id}`)}>{player.club}</td>
+                                <td><button className='bg-blue-400 font-bold text-white w-16 rounded align-middle' type='button' onClick={() => navigate(`/player/edit/${player.player_id}`)}>Edit</button></td>
                             </tr>
                         ) : <p className='text-center'>Loading...</p>}
                     </tbody>

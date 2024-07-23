@@ -1,7 +1,7 @@
 'use strict'
 
 import express from 'express';
-import mongoose from 'mongoose';
+import pg from 'pg'
 import 'dotenv/config'
 
 //CONFIG
@@ -9,10 +9,13 @@ const PORT = process.env.PORT || 3001 ;
 const app = express();
 
 //DATABASE
-mongoose.connect(process.env.DATABASE_URL)
-const db = mongoose.connection
-db.on('error', (error)=> console.error(error))
-db.once('open', ()=>console.log('Connected to Database'))
+const { Pool } = pg
+const pool = new Pool({
+    user: process.env.PG_USER,
+    password: process.env.PG_PASSWORD,
+    host: process.env.PG_HOST,
+    port: process.env.PG_PORT
+})
 
 //
 app.use(express.urlencoded({ extended: true }))
