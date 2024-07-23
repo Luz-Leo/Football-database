@@ -1,12 +1,8 @@
-import pool from '../server.js'
+import pool from '../../db/db.js'
 
-export const getPlayers = async (req, res) => {
-    pool.query('SELECT * FROM players ORDER BY id ASC', (error, results) => {
-      if (error) {
-        throw error
-      }
-      res.status(200).json(results.rows)
-    })
+const getPlayers = async (req, res) => {
+    const result = await pool.query('SELECT * FROM players')
+    res.status(200).json(result.rows)
   }
 
-export default {getPlayers}
+export default {getPlayers};

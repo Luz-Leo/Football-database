@@ -8,15 +8,6 @@ import 'dotenv/config'
 const PORT = process.env.PORT || 3001 ;
 const app = express();
 
-//DATABASE
-const { Pool } = pg
-const pool = new Pool({
-    user: process.env.PG_USER,
-    password: process.env.PG_PASSWORD,
-    host: process.env.PG_HOST,
-    port: process.env.PG_PORT
-})
-
 //
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json());
