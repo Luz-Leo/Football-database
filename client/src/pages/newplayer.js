@@ -23,7 +23,7 @@ const NewPlayer = () => {
 
         setTimeout(() => {
             setFeedback({ message: "New player created!", style: 'text-green-600 font-bold' })
-            setTimeout(() => { navigate(`/}`) }, 1000)
+            setTimeout(() => { navigate(`/`) }, 1000)
         }, 1000)
     }
 

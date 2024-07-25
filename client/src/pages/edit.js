@@ -74,7 +74,7 @@ const Edit = () => {
                                     <input type="text"
                                         name="player-firstname"
                                         id="player-firstname"
-                                        className="edit-input border-hidden border-white"
+                                        className="edit-input"
                                         onChange={e => {
                                             setPlayer({
                                                 ...player,
