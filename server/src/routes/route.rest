@@ -42,3 +42,25 @@ Content-Type: application/json
 
 DELETE http://localhost:3001/player/edit/3
 
+
+### 
+
+POST http://localhost:3001/register
+Content-Type: application/json
+
+{
+    "name":"Leonardo Luz",
+    "username": "LeeoLz",
+    "email": "leeonardoluz@gmail.com",
+    "password": "123"
+}
+
+###
+
+POST http://localhost:3001/login
+Content-Type: application/json
+
+{
+    "username":"LeeoLz1",
+    "password":"123"
+}
