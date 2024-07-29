@@ -5,6 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 const Edit = () => {
     // const [player, setplayer] = useState(null)
     const [player, setPlayer] = useState(null)
+    const [token, setToken] = useState('')
     const [feedback, setFeedback] = useState({ message: '', style: '' })
 
     const navigate = useNavigate()
@@ -16,7 +17,12 @@ const Edit = () => {
     }, [id])
 
     const fetchplayer = (id) => {
-        fetch(`/player/${id}`)
+        const token = localStorage.getItem('jwt-token')
+        fetch(`/player/edit/${id}`, {
+            headers: {
+                'Authorization': "Bearer " + token
+            }
+        })
             .then((res) => res.json())
             .then((player) => {
                 setPlayer(player)

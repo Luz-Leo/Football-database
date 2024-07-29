@@ -2,7 +2,7 @@ GET http://localhost:3001/players
 
 ###
 
-GET http://localhost:3001/player/2
+GET http://localhost:3001/player/5
 
 ###
 
@@ -59,8 +59,30 @@ Content-Type: application/json
 
 POST http://localhost:3001/login
 Content-Type: application/json
+{
+    "username":"teste",
+    "password":"123"
+}
+
+###
+
+GET http://localhost:3001/player/edit/5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidGVzdGUiLCJpYXQiOjE3MjIwNzc5NjAsImV4cCI6MTcyMjA4MTU2MH0.9AMAuoq7qHX5v4uvAcMGNC0ORfJg8JqD1ptg9h1cvpw
+
+###
+
+POST http://localhost:3001/token
+Content-Type: application/json
 
 {
-    "username":"LeeoLz1",
-    "password":"123"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidGVzdGUiLCJpYXQiOjE3MjIwNzI2Mjl9.miik9ks7ZNE_M_-QuPYuWcHfBDdksejnMNfuyDf6kFo"
+}
+
+###
+
+DELETE http://localhost:3001/logout
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidGVzdGUiLCJpYXQiOjE3MjIwNzI0NTJ9.HawIV4x46bFd5RyAReR5WqiABOVvEUPIOwqNXqAMTTg"
 }

@@ -2,7 +2,16 @@ import repository from '../repositories/player-repository.js'
 import validate from '../validatiors/validation.js'
 
 export async function getById(req, res) {
-    res.status(200).json(res.player.rows[0])
+    let player;
+    try {
+        player = await repository.getById(req.params.id)
+        if (player == null) {
+            return res.status(400).json({ message: 'Cannot find player' })
+        }
+        res.status(200).json(player.rows[0])
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
 }
 
 export async function createPlayer(req, res) {
@@ -26,7 +35,7 @@ export async function createPlayer(req, res) {
 
 export async function updatePlayer(req, res) {
     try {
-        await repository.updatePlayer( req.params.id , req.body)
+        await repository.updatePlayer(req.params.id, req.body)
         res.status(201).send({ message: "Player updated sucessfully" })
 
     } catch (err) {

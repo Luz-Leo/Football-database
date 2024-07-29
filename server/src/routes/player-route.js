@@ -1,14 +1,17 @@
 import express from 'express';
 import getPlayer from '../middleware/getPlayer.js';
-import controller from '../controllers/player-controller.js'
+import authenticateToken from '../middleware/authenticateToken.js';
+import controller from '../controllers/player-controller.js';
 const router = express.Router()
 
-router.get('/:id', getPlayer, controller.getById)
+router.get('/:id', authenticateToken, controller.getById)
 
-router.post('/', controller.createPlayer)
+router.post('/', authenticateToken, controller.createPlayer)
 
-router.put('/edit/:id', getPlayer, controller.updatePlayer)
+router.get('/edit/:id', authenticateToken, controller.getById)
 
-router.delete('/edit/:id', getPlayer, controller.deletePlayer)
+router.put('/edit/:id', authenticateToken, getPlayer, controller.updatePlayer)
+
+router.delete('/edit/:id', authenticateToken,  getPlayer, controller.deletePlayer)
 
 export default router;
