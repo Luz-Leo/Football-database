@@ -11,7 +11,12 @@ const Player = () => {
     let { id } = useParams();
 
     useEffect(() => {
-        fetch(`/player/${id}`)
+        const token = localStorage.getItem('jwt-token')
+        fetch(`/player/${id}`, {
+            headers: {
+                'Authorization': "Bearer " + token
+            }
+        })
             .then((res) => res.json())
             .then((data) => setData(data))
     }, [id])
@@ -67,7 +72,7 @@ const Player = () => {
                     </div>
                 </div>
                 <div className="col-span-2 " >
-                <button type="button" className="btn my-3"
+                    <button type="button" className="btn my-3"
                         onClick={() => navigate(`/player/edit/${id}`)}>
                         Edit
                     </button>

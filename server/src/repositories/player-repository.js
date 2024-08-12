@@ -1,9 +1,14 @@
 import pool from "../../db/db.js";
+import { getOrSetCache } from '../utils/utils.js';
+
 
 async function getById(id) {
 
-    const res = await pool.query('SELECT * from players WHERE player_id = $1', [id])
-    return res;
+    const player = await getOrSetCache(`players:${id}`, 3600, async () => {
+        const data = await pool.query('SELECT * from players WHERE player_id = $1', [id])
+        return data
+    })
+    return player
 }
 
 async function createPlayer(data) {

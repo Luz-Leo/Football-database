@@ -6,7 +6,7 @@ const NewPlayer = () => {
     const [feedback, setFeedback] = useState({ message: '', style: '' })
 
     const navigate = useNavigate();
-
+    const token = localStorage.getItem('jwt-token')
 
     const addPlayer = (e) => {
         e.preventDefault()
@@ -17,11 +17,13 @@ const NewPlayer = () => {
             body: JSON.stringify(player),
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': "Bearer " + token
             },
         })
             .then((res) => res.json())
 
         setTimeout(() => {
+            
             setFeedback({ message: "New player created!", style: 'text-green-600 font-bold' })
             setTimeout(() => { navigate(`/`) }, 1000)
         }, 1000)

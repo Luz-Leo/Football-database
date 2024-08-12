@@ -1,8 +1,5 @@
-/*eslint no-unused-expressions: "error"*/
-
-import { useState, useEffect } from 'react';
-import { useNavigate, useOutletContext } from "react-router-dom";
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
     const [searchTerm, setSearchTerm] = useState('')
